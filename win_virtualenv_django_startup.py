@@ -29,9 +29,7 @@ if ":" in installation_path:
 else:
     full_path = os.path.join(current_dir, installation_path)
 if " " in full_path:
-    print("Virtualenv does not support spaces in file path.")
-    print("Exiting...")
-    os._exit(1)
+    print("Warning: Virtualenv does not like spaces in file path.")
 # forming first command to execute in subprocess.Popen; shlex.quote - protection from command line injection
 command1 = "mkvirtualenv {}".format(shlex.quote(project_name))  # creating new virtualenv alias with our project name
 proc = subprocess.Popen(command1, shell=True, cwd=full_path, universal_newlines=True, stdout=subprocess.PIPE,
@@ -88,8 +86,8 @@ django_dir = os.path.join(full_path, project_name)
 if out != "":
     print("3d command output: ", out)
 # Binding virtualenv to our new django directory
-command4 = "workon {name} & setprojectdir {dir}".format(name=shlex.quote(project_name), dir=django_dir)
-proc = subprocess.Popen(command4, shell=True, cwd=full_path, universal_newlines=True, stdout=subprocess.PIPE,
+command4 = "workon {name} & setprojectdir .".format(name=shlex.quote(project_name))
+proc = subprocess.Popen(command4, shell=True, cwd=django_dir, universal_newlines=True, stdout=subprocess.PIPE,
                         stderr=subprocess.PIPE)
 out, err = proc.communicate()
 if err != "":
